@@ -1,20 +1,8 @@
-# Querying the world state in Hyperledger Fabric 1.4
-In this Code Pattern we will be taking a look at some of the indexing and querying capabilities of Hyperledger Fabric 1.4. We will be expanding the commercial paper example from the [Hyperledger Fabric 1.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/scenario.html).
+# Exploring the Querying Capability of Hyperledger Fabric 1.4
 
-This hands-on lab walks you through the following:
-1. Creating indexes for the Couch DB world state
-2. Querying world state database
-3. Using the Node.js SDK to invoke query transactions from client applications
+In this pattern we will take a look at how you can query the world state of a peer within Hyperledger Fabric. Querying the world state is useful for seeing the current state of the assets in the network. For this pattern we will be using the commercial paper use case from the [Hyperledger Fabric 1.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/scenario.html).
 
-## Prerequisites 
-
-  - Install [VSCode](https://code.visualstudio.com/)
-  - Install the [IBM Blockchain platform extension for VSCode](https://github.com/IBM-Blockchain/blockchain-vscode-extension)
- 
-
-## Querying the World State
-
-In this section we will take a look at how you can query the world state of a channel within Hyperledger Fabric. Before we jump into showing how to query the world state, we first need to understand what database indexes are and how they can help us with queries.
+During this pattern you’ll go through the process of creating indexes for the CouchDB world state database. You’ll then update the smart contract to include the logic to query the world state utilizing the newly created indexes. After updating and redeploying the smart contract you will then simulate 100 transactions to populate the world state with assets. Lastly, we will run a few queries utilizing the Node.js SDK and view the results that were returned.
 
 ### What are database indexes?
 
@@ -30,6 +18,16 @@ It's important to note that every time a document is added to the database the i
 4. Upgrade smart contract
 5. Simulate transactions to populate world state
 6. Query world state
+
+
+## Prerequisites 
+
+- Install [VSCode](https://code.visualstudio.com/)
+- Install the [IBM Blockchain platform extension for VSCode](https://github.com/IBM-Blockchain/blockchain-vscode-extension)
+- [Node v8.x and npm v5.x](https://nodejs.org/en/download/)
+- [Yeoman (yo) v2.x](http://yeoman.io/)
+- [Docker version v17.06.2-ce or greater](https://www.docker.com/get-docker)
+- [Docker Compose v1.14.0 or greater](https://docs.docker.com/compose/install/)
 
 # Steps
 
