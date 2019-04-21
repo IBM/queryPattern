@@ -6,7 +6,7 @@ During this pattern you’ll go through the process of creating indexes for the 
 
 ### What are database indexes?
 
-In order to understand indexes, let's take a look at what happens when you query the world state. Say, for example, you want to find all assets owned by the user, "Bob". The database will search through each json document in the database one by one and return all documents that match user = "bob. This might not seem like a big deal but consider if you have millions of documents in your database. These queries might take a while to return the results as the database needs to go through each and every document. With indexes you create a reference that contains all the values of a specific field and which document contains that value. What this means is that instead of searching through every document, the database can just search the index for occurrences of the user "bob" and return the documents that are referenced. 
+In order to understand indexes, let's take a look at what happens when you query the world state. Say, for example, you want to find all assets owned by the user, "Bob". The database will search through each json document in the database one by one and return all documents that match user = "bob". This might not seem like a big deal but consider if you have millions of documents in your database. These queries might take a while to return the results as the database needs to go through each and every document. With indexes you create a reference that contains all the values of a specific field and which document contains that value. What this means is that instead of searching through every document, the database can just search the index for occurrences of the user "bob" and return the documents that are referenced. 
 
 It's important to note that every time a document is added to the database the index needs to be updated. Normally in CouchDB this is done when a query is received but in Hyperledger Fabric the indexes are updated every time a new block is committed which allows for faster querying. This is a process known as **index warming**.
 
@@ -194,7 +194,7 @@ This process will export the connection profile which has the necessary informat
 #### 3. Populate the world state
 Right now our world state is empty and there is nothing to query. Let's add some entries to the ledger so that we can see some results when we run the queries.
 
-1. From the termainal and while in the **application** folder, run `node setup.js`
+1. From the terminal and while in the **application** folder, run `node setup.js`
 
 This will run through a variety of transactions to populate the ledger. The process will take about 2-3 minutes. While this is running, take a look at the **setup.js** file from within VS Code to see what the transactions are doing.
 
@@ -211,7 +211,7 @@ This query will return all assets that are currently owned by MagnetoCorp. If yo
 
 ![query by owner](./images/queryByOwner.png)
 
-3. From the termainl, run `node queryByCurrentStatus.js`
+3. From the terminal, run `node queryByCurrentStatus.js`
 
 This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentStatus.js` in VS Code you can see in line 67 that this time we are calling the `queryByCurrentStatus` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
 
@@ -221,7 +221,7 @@ This query will return all commercial papers that have been bought. If you take 
 
 ![query by current state](./images/queryByCurrentState.png)
 
-It's also worth noting that to call the transactions in these query files we are using the `contract.evaluateTransaction()` method instead of `contract.submitTransaction()`. This is becuase `evaluateTransaction` is only evaluated on the endorsing nodes and does not get submitted to the orderer and thus is not ordered into a block or committed. As such this method cannot update the ledger and is only used for querying.
+It's also worth noting that to call the transactions in these query files we are using the `contract.evaluateTransaction()` method instead of `contract.submitTransaction()`. This is because `evaluateTransaction` is only evaluated on the endorsing nodes and does not get submitted to the orderer and thus is not ordered into a block or committed. As such this method cannot update the ledger and is only used for querying.
 
 ### Summary
 In this section we took a look at how querying works in a Hyperledger Fabric network with CouchDB as the state database. First, we created indexes for commonly used queries. Then, we added the query logic to the smart contract. Finally, we ran some queries and took a look at what the world state contained.
