@@ -11,7 +11,7 @@ In order to understand indexes, let's take a look at what happens when you query
 It's important to note that every time a document is added to the database the index needs to be updated. Normally in CouchDB this is done when a query is received but in Hyperledger Fabric the indexes are updated every time a new block is committed which allows for faster querying. This is a process known as **index warming**.
 
 # Flow
-
+![Workflow](images/app-arch.png)
 1. Package, Install, and Instantiate smart contract
 2. Create indexes
 3. Add query logic
