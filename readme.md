@@ -12,12 +12,12 @@ It's important to note that every time a document is added to the database the i
 
 # Flow
 ![Workflow](images/app-arch.png)
-1. Package, Install, and Instantiate smart contract
-2. Create indexes
-3. Add query logic
-4. Upgrade smart contract
-5. Simulate transactions to populate world state
-6. Query world state
+1. The developer creates the query indexes.
+2. The developer adds query logic to the smart contract.
+3. The IBM Blockchain extension for VS Code is then used to package, install, and instantiate the smart contract and indexes on the local Hyperledger Fabric network.
+4. We simulate 100 transactions on the network to populate the world state with data.
+5. The Node.js client application uses the Hyperledger Fabric SDK to send the query to the endorsing nodes to evaluate the query transaction.
+6. The query results are returned.
 
 
 ## Prerequisites 
