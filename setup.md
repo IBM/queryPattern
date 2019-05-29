@@ -21,7 +21,7 @@ After a few minutes, your network will be up and running.
 
 2. Then, enter the following command to clone the repo
 ```bash
-git clone https://github.com/odrodrig/queryPattern.git
+git clone https://github.com/IBM/queryPattern
 ```
 
 ### 2. Deploy the paper contract
