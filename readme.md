@@ -177,7 +177,7 @@ Before we run the query program we need to do a few things first:
 1. From the terminal, cd into the **application** directory of this repo. 
 2. Run `npm install` 
 
-#### 2. Exporting connection details and creating the wallet
+#### 2. Exporting connection details and wallet
 1. From the IBM Blockchain Platform extension, go to the **Local Fabric Ops** section and expand the **Nodes** category.
 2. Right click on `peer0.org1.example.com` and select **Export Connection Details**
 
@@ -185,7 +185,19 @@ Before we run the query program we need to do a few things first:
 
 3. In the dialog that appears select the **queryPattern** folder
 
-This process will export the connection profile which has the necessary information our application will need to interact with our blockchain network, and a wallet will be created that contains an admin identity. 
+This process will export the connection profile which has the necessary information our application will need to interact with our blockchain network. Next we need to export our wallet.
+
+4. From the IBM Blockchain Platform extension, go to the **FABRIC WALLETS** section at the bottom left
+and right-click the **local_fabric_wallet**. Then select **Export Wallet** and then when it asks where, 
+save the wallet in the **queryPattern** folder.
+
+![export connection](./images/exportWallet.png)
+
+
+Your folder structure should look similar to the picture below, with our wallet and admin credentials which include an public and private key.
+
+![export connection](./images/structureWithWallet.png)
+
 
 4. Switch back to the Explorer view by clicking on the paper icons at the top left of VS Code.
 
