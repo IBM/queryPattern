@@ -199,9 +199,9 @@ Your folder structure should look similar to the picture below, with our wallet 
 ![export connection](./images/structureWithWallet.png)
 
 
-4. Switch back to the Explorer view by clicking on the paper icons at the top left of VS Code.
+4. Switch back to the Explorer view by clicking on the paper icons at the top left of VS Code. You should now see our newly exported **local_fabric_wallet** folder.
 
-5. You should now notice a new folder added under the **queryPattern** directory called **local_fabric**.
+
 
 #### 3. Populate the world state
 Right now our world state is empty and there is nothing to query. Let's add some entries to the ledger so that we can see some results when we run the queries.
