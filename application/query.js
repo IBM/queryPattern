@@ -21,7 +21,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 
 // A wallet stores a collection of identities for use
 
-const wallet = new FileSystemWallet('../local_fabric/wallet');
+const wallet = new FileSystemWallet('./../local_fabric_wallet');
 
 // Main program function
 async function main() {
@@ -34,7 +34,7 @@ async function main() {
 
     // Specify userName for network access
     // const userName = 'isabella.issuer@magnetocorp.com';
-    const userName = 'Admin@org1.example.com';
+    const userName = 'admin';
 
     // Load connection profile; will be used to locate a gateway
     let connectionProfile = yaml.safeLoad(fs.readFileSync('./networkConnection.yaml', 'utf8'));
