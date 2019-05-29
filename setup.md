@@ -9,7 +9,7 @@ Verify the installation under the Extensions view.
 
 Notice the IBM Blockchain platform icon on the side bar.
 #### Step 2. Start a local fabric envioronemnt.
-Goto the Blockchain platfrom view and click on `Local Fabric runtime is stopped. Click to start.` under **Local Fabric Ops**.
+Goto the Blockchain platform view and click on `Local Fabric runtime is stopped. Click to start.` under **Local Fabric Ops**.
 
 ![Starting Local Fabric](images/StartingLocalFabric.png)
 
@@ -17,7 +17,7 @@ After a few minutes, your network will be up and running.
 
 #### Step 3. Clone this repo. 
 
-1. Open up your terminal and cd into where you'd like to clone the repo. 
+1. Open up your terminal and `cd` into where you'd like to clone the repo. 
 
 2. Then, enter the following command to clone the repo
 ```bash
@@ -28,7 +28,7 @@ git clone https://github.com/odrodrig/queryPattern.git
 In this section, we will deploy the base paper contract that we will be modifying later. 
 
 #### Step 1.
-In VSCode, choose File > Open Folder, and select the repo that was cloned in the previous step. 
+In VSCode, choose `File` > `Open Folder`, and select the repo that was cloned in the previous step. 
 
 Then right click in the space under your files in the **Explorer** view and select **Add folder to workspace**
 
@@ -76,7 +76,7 @@ If all is well then you should see **papercontract v0.0.1** under the *Installed
 
 4. You will then be prompted to enter a function to call, enter **instantiate** and press enter.
 
-5. The function doesn't require any arguments so you can leave the propmt empty and just press enter.
+5. The function doesn't require any arguments so you can leave the prompt empty and just press enter.
 
 After a short delay your smart contract will be instantiated on the channel.
 
