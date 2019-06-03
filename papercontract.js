@@ -184,7 +184,7 @@ class CommercialPaperContract extends Contract {
                 "owner": owner
             },
             "use_index": ["_design/ownerIndexDoc", "ownerIndex"]
-        }
+        };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
         return queryResults;
@@ -206,7 +206,7 @@ class CommercialPaperContract extends Contract {
                 "currentState": state
             },
             "use_index": ["_design/currentStateIndexDoc", "currentStateIndex"]
-        }
+        };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
         return queryResults;
@@ -223,7 +223,7 @@ class CommercialPaperContract extends Contract {
 
         let queryString = {
             "selector": {}
-        }
+        };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
         return queryResults;
