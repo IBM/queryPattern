@@ -73,7 +73,7 @@ async function main() {
     });
 
 
-    return resultsObject
+    return resultsObject;
 
   } catch (error) {
 
