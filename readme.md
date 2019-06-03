@@ -223,9 +223,9 @@ This query will return all assets that are currently owned by MagnetoCorp. If yo
 
 ![query by owner](./images/queryByOwner.png)
 
-3. From the terminal, run `node queryByCurrentStatus.js`
+3. From the terminal, run `node queryByCurrentState.js`
 
-This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentStatus.js` in VS Code you can see in line 67 that this time we are calling the `queryByCurrentStatus` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
+This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentState.js` in VS Code you can see in line 67 that this time we are calling the `queryByCurrentState` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
 
 - 1 = issued
 - 2 = bought
