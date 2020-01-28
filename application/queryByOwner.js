@@ -26,78 +26,78 @@ const wallet = new FileSystemWallet('./../local_fabric_wallet');
 // Main program function
 async function main() {
 
-  // A gateway defines the peers used to access Fabric networks
-  const gateway = new Gateway();
+    // A gateway defines the peers used to access Fabric networks
+    const gateway = new Gateway();
 
-  // Main try/catch block
-  try {
+    // Main try/catch block
+    try {
 
-    // Specify userName for network access
-    // const userName = 'isabella.issuer@magnetocorp.com';
-    const userName = 'admin';
+        // Specify userName for network access
+        // const userName = 'isabella.issuer@magnetocorp.com';
+        const userName = 'admin';
 
-    // Load connection profile; will be used to locate a gateway
-    let connectionProfile = yaml.safeLoad(fs.readFileSync('./networkConnection.yaml', 'utf8'));
+        // Load connection profile; will be used to locate a gateway
+        let connectionProfile = yaml.safeLoad(fs.readFileSync('./networkConnection.yaml', 'utf8'));
 
-    // Set connection options; identity and wallet
-    let connectionOptions = {
-      identity: userName,
-      wallet: wallet,
-      discovery: { enabled:false, asLocalhost: true }
-    };
+        // Set connection options; identity and wallet
+        let connectionOptions = {
+            identity: userName,
+            wallet: wallet,
+            discovery: { enabled:false, asLocalhost: true }
+        };
 
-    // Connect to gateway using application specified parameters
-    console.log('Connect to Fabric gateway.');
+        // Connect to gateway using application specified parameters
+        console.log('Connect to Fabric gateway.');
 
-    await gateway.connect(connectionProfile, connectionOptions);
+        await gateway.connect(connectionProfile, connectionOptions);
 
-    // Access PaperNet network
-    console.log('Use network channel: mychannel.');
+        // Access PaperNet network
+        console.log('Use network channel: mychannel.');
 
-    const network = await gateway.getNetwork('mychannel');
+        const network = await gateway.getNetwork('mychannel');
 
-    // Get addressability to commercial paper contract
-    console.log('Use org.papernet.commercialpaper smart contract.');
+        // Get addressability to commercial paper contract
+        console.log('Use org.papernet.commercialpaper smart contract.');
 
-    const contract = await network.getContract('papercontract', 'org.papernet.commercialpaper');
-
-
-    //Query line goes here.
-    let results = await contract.evaluateTransaction('queryByOwner', 'MagnetoCorp');
-    
-    //console.log(JSON.parse(results.toString()));
-
-    var resultsObject = JSON.parse(JSON.parse(results.toString()));
-
-    resultsObject.forEach((result)=> {
-      console.log(result);
-    });
+        const contract = await network.getContract('papercontract', 'org.papernet.commercialpaper');
 
 
-    return resultsObject;
+        //Query line goes here.
+        let results = await contract.evaluateTransaction('queryByOwner', 'MagnetoCorp');
 
-  } catch (error) {
+        //console.log(JSON.parse(results.toString()));
 
-    console.log(`Error processing transaction. ${error}`);
-    console.log(error.stack);
+        let resultsObject = JSON.parse(results.toString());
 
-  } finally {
+        resultsObject.forEach((result)=> {
+            console.log(result);
+        });
 
-    // Disconnect from the gateway
-    console.log('Disconnect from Fabric gateway.')
-    gateway.disconnect();
 
-  }
+        return resultsObject;
+
+    } catch (error) {
+
+        console.log(`Error processing transaction. ${error}`);
+        console.log(error.stack);
+
+    } finally {
+
+        // Disconnect from the gateway
+        console.log('Disconnect from Fabric gateway.');
+        gateway.disconnect();
+
+    }
 }
 main().then(() => {
 
-  console.log('Query program complete.');
+    console.log('Query program complete.');
 
 }).catch((e) => {
 
-  console.log('Query program exception.');
-  console.log(e);
-  console.log(e.stack);
-  process.exit(-1);
+    console.log('Query program exception.');
+    console.log(e);
+    console.log(e.stack);
+    process.exit(-1);
 
 });
