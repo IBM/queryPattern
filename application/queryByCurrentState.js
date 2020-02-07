@@ -60,7 +60,6 @@ async function main() {
 
         const contract = await network.getContract('papercontract', 'org.papernet.commercialpaper');
 
-
         //Query line goes here.
         let results = await contract.evaluateTransaction('queryByCurrentState', '2');
 

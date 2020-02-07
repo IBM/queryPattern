@@ -1,17 +1,27 @@
+[![Build Status](https://travis-ci.org/IBM/queryPattern.svg?branch=master)](https://travis-ci.org/IBM/queryPattern)
+
 # Exploring the Querying Capability of Hyperledger Fabric 1.4
 
-In this pattern we will take a look at how you can query the world state of a peer within Hyperledger Fabric. Querying the world state is useful for seeing the current state of the assets in the network. For this pattern we will be using the commercial paper use case from the [Hyperledger Fabric 1.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/scenario.html).
+In this pattern, we will take a look at how you can query the world state of a peer within Hyperledger Fabric. Querying the world state is useful for seeing the current state of the assets in the network. For this pattern, we will be using the commercial paper use case from the [Hyperledger Fabric 1.4 documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/scenario.html).
 
-During this pattern you’ll go through the process of creating indexes for the CouchDB world state database. You’ll then update the smart contract to include the logic to query the world state utilizing the newly created indexes. After updating and redeploying the smart contract you will then simulate 100 transactions to populate the world state with assets. Lastly, we will run a few queries utilizing the Node.js SDK and view the results that were returned.
+In this pattern, you will go through the process of creating indexes for the CouchDB world state database. You will then update the smart contract to include the logic to query the world state utilizing the newly created indexes. After updating and redeploying the smart contract, you will simulate 100 transactions to populate the world state with assets. Lastly, you will run a few queries utilizing the Node.js SDK and view the results that were returned.
 
-### What are database indexes?
+
+## What are database indexes?
 
 In order to understand indexes, let's take a look at what happens when you query the world state. Say, for example, you want to find all assets owned by the user, "Bob". The database will search through each json document in the database one by one and return all documents that match user = "bob". This might not seem like a big deal but consider if you have millions of documents in your database. These queries might take a while to return the results as the database needs to go through each and every document. With indexes you create a reference that contains all the values of a specific field and which document contains that value. What this means is that instead of searching through every document, the database can just search the index for occurrences of the user "bob" and return the documents that are referenced. 
 
-It's important to note that every time a document is added to the database the index needs to be updated. Normally in CouchDB this is done when a query is received but in Hyperledger Fabric the indexes are updated every time a new block is committed which allows for faster querying. This is a process known as **index warming**.
+It is important to note that every time a document is added to the database the index needs to be updated. Normally in CouchDB this is done when a query is received but in Hyperledger Fabric the indexes are updated every time a new block is committed which allows for faster querying. This is a process known as **index warming**.
 
-# Flow
-![Workflow](images/app-arch.png)
+
+## Flow
+
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/73315028-f5d28500-41fc-11ea-9aba-31f1ed27e39d.png">
+</p>
+<br>
+
 1. The developer creates the query indexes.
 2. The developer adds query logic to the smart contract.
 3. The IBM Blockchain extension for VS Code is then used to package, install, and instantiate the smart contract and indexes on the local Hyperledger Fabric network.
@@ -22,31 +32,38 @@ It's important to note that every time a document is added to the database the i
 
 ## Prerequisites 
 
-- Install [VSCode](https://code.visualstudio.com/)
+- Install [VSCode version 1.38.0 or greater](https://code.visualstudio.com)
 - Install the [IBM Blockchain platform extension for VSCode](https://github.com/IBM-Blockchain/blockchain-vscode-extension)
-- [Node v8.x and npm v5.x](https://nodejs.org/en/download/)
-- [Yeoman (yo) v2.x](http://yeoman.io/)
+- [Node v8.x or v10.x and npm v6.x or greater](https://nodejs.org/en/download/)
 - [Docker version v17.06.2-ce or greater](https://www.docker.com/get-docker)
 - [Docker Compose v1.14.0 or greater](https://docs.docker.com/compose/install/)
 
-# Steps
+
+## Steps
 
 ### 1. Deploy the commercial paper smart contract
-As mentioned before, this pattern extends the commercial paper example so we will need to package, install, and instantiate it before we do anything else.
 
-Follow the instructions in the [setup.md](setup.md) document to get your local environment up and running with the commercial paper smart contract. 
+As mentioned before, this pattern extends the commercial paper example so we will need to package, install, and instantiate the commercial paper smart contract before we do anything else.
 
-### 2. Create indexes for those commonly used queries
-In the commercial paper use case we will be querying by issuer, by owner, and by the current state of each asset.
+Follow the instructions in the [SETUP.md](./SETUP.md) document to get your local environment up and running with the commercial paper smart contract. 
 
-1. First, create a directory under the **contract** directory of magnetocorp and name the new directory **META-INF**.
-2. Then, in the new directory, create another new directory named **statedb**
-3. After that, create a new directory inside of **statedb** called **couchdb**
-4. Next, you guessed it, create a new directory inside of **couchdb** and name it **indexes**
+
+### 2. Create indexes for the commonly used queries
+
+In the commercial paper use case, we will be querying by issuer, by owner, and by the current state of each asset.
+
+1. First, create a directory under the **contract** directory and name the new directory **META-INF**.
+2. Then, within the new directory, create another directory named **statedb**.
+3. After that, create a new directory inside of **statedb** called **couchdb**.
+4. Next, you guessed it, create a new directory inside of **couchdb** and name it **indexes**.
 
 The directory structure should look like the image below.
 
-![directoryStructure](./images/directoryStructure.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/73315384-f3245f80-41fd-11ea-8f44-21efed7110a0.png">
+</p>
+<br>
 
 1. Now we can start creating our index definitions. Create a new file in the **indexes** directory and name it **issuerIndex.json**
 2. Then, copy the following code into that file:
@@ -65,10 +82,10 @@ The directory structure should look like the image below.
 This file states that the index will:
 - keep track of the *issuer* field of each document
 - store this index in a design document (ddoc) named *issuerIndexDoc*
- - is named issuerIndex
+- is named issuerIndex
 - will be in json format
 
-Now let's create two more.
+Now let's create two more index files.
 
 3. Create a new file in the **indexes** directory and name it **ownerIndex.json**
 4. Then, copy the following code into that file:
@@ -102,16 +119,21 @@ This index is very similar to the previous one for the issuer field but instead 
 
 Your directory structure should now look like this:
 
-![dirWithIndexes](./images/dirWithIndexes.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/73315427-16e7a580-41fe-11ea-8fb3-920391ffeaa1.png">
+</p>
+<br>
 
-And that's all it takes to build indexes. These indexes will be deployed next time the smart contract is installed and instantiated.
+And that's all it takes to build indexes. These indexes will be deployed the next time the smart contract is installed and instantiated.
+
 
 ### 3. Implement query transactions in the smart contract
 
-Now we need to implement the query logic in the transactions of the smart contract. These transactions will be invoked by the Node SDK to execute our queries.
+Now we need to implement the query logic in the transactions of the smart contract. These transactions will be invoked by the Node.js SDK to execute our queries.
 
 1. Using VSCode, open the [papercontract.js](./papercontract.js) file found in this pattern repo
-2. Replace the contents of **contract/lib/papercontract.js** with the new [papercontract.js](./papercontract.js)
+2. Replace the contents of [contract/lib/papercontract.js](./contract/lib/papercontract.js) with the new [papercontract.js](./papercontract.js)
 
 This updated contract already has the query logic added. Let's take a look at the transactions that were added.
 
@@ -125,45 +147,76 @@ Let's take a closer look at the code involved in making these queries.
 
 Open the new [papercontract.js](./papercontract.js) in VS Code and go to line 182 
 
-![selector](./images/selector.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74057410-de8c5800-49b1-11ea-8e4e-036258251935.png">
+</p>
+<br>
 
-Take a look at how the `queryString` is structured. The `selector` property is where you specify which field of the asset state you want to search against. In the case of our `queryByOwner` transaction, we are searching against the `owner` field and passing in a variable that represents the owner that we want to search for (e.g. `MagnetoCorp`)
+Take a look at how the `queryString` is structured. The `selector` property is where you specify which field of the asset state you want to search against. In the case of our `queryByOwner` transaction, we are searching against the `owner` field and passing in a variable that represents the owner that we want to search for (e.g. `MagnetoCorp`).
 
 The next property to note is `use_index` which allows you to specify a design document and index to use for the query.
 
 
 ### 4. Upgrading the deployed contract
+
 Since we made changes to the smart contract we now need to re-deploy it to the peer.
 
 1. Open up [contract/package.json](./contract/package.json) in VS Code
 
 2. Change the *version* property to **0.0.2** and save the file.
 
-![newVersion](./images/newVersion.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/73315612-8c537600-41fe-11ea-910f-7e073dcc4d77.png">
+</p>
+<br>
 
-3. Click on the IBM Blockchain extension icon on the left side of VS Code.
+3. Press the `F1` key to see the different VS code options. Choose `IBM Blockchain Platform: Package Open Project`.
 
-4. Package the contract again by clicking on three dot menu button at the top of the *Smart Contract Packages* section on the upper left side and selecting **Package a Smart Contract Project**.
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/71910509-05036d00-3140-11ea-8b15-7c8aeb403974.png">
+</p>
 
 If necessary, specify to create the package from the **contract** folder.
 
-![packageContract](./images/package.png)
+4. Click the `IBM Blockchain Platform` extension button on the left. This will show the packaged contracts on top and the blockchain connections on the bottom.
 
-5. Next, go to the **Local Fabric Ops** section and find the instantiated **papercontract@0.0.1**. Right click on it and select **Upgrade Smart Contract**
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74057595-4773d000-49b2-11ea-869f-225f27992677.png">
+</p>
+<br>
 
-![upgrade](./images/upgrade.png)
+5. The next step is to install this newly packaged smart contract - which is named **papercontract@0.0.2**. Find the **FABRIC ENVIRONMENTS** section and click on **+ Install**. Select **papercontract@0.0.2** when prompted to select the package to install on the peer.
 
-6. In the dialog, select the newly installed papercontract@0.0.2.
+When the process completes, you should see **papercontract@0.0.2** under the *Installed* section under **FABRIC ENVIRONMENTS**.
 
-7. Select the peer that you'd like to install the smart contract to. There should only be one option.
+6. Next, go to the **FABRIC ENVIRONMENTS** section and find the instantiated **papercontract@0.0.1**. Right click on it and select **Upgrade Smart Contract**
 
-8. When asked about what function you'd like to call, enter **instantiate**
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74058057-34adcb00-49b3-11ea-967a-fe9775687364.png">
+</p>
+<br>
+
+7. Select the newly installed **papercontract@0.0.2**, when prompted to select the smart contract version to perform an upgrade with.
+
+8. When asked about what function you'd like to call, enter **instantiate**.
 
 9. Then when it asks for arguments to pass, just press enter without typing anything.
 
-10. If successful, you should now see **papercontract@0.0.2** in the **Local Fabric Ops** section under **Instantiated**
+10. Select **No** when prompted to provide a private data collection configuration file.
 
-![instantiateSuccess](./images/instantiateSuccess.png)
+11. Select **Default (single endorser, any org)** when prompted to choose a smart contract endorsement policy.
+
+12. If successful, you should now see **papercontract@0.0.2** in the **FABRIC ENVIRONMENTS** section under **Instantiated**.
+
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74058551-4774cf80-49b4-11ea-9f2a-2b5b290ff3fe.png">
+</p>
+<br>
 
 
 ### 5. Query the world state with the Node.js SDK
@@ -173,44 +226,61 @@ Before we run the query program we need to do a few things first:
 - Export the connection details and create the wallet
 - Populate the world state
 
+
 #### 1. Installing dependencies
+
 1. From the terminal, cd into the **application** directory of this repo. 
-2. Run `npm install` 
+2. Run `npm install`.
+
 
 #### 2. Exporting connection details and wallet
-1. From the IBM Blockchain Platform extension, go to the **Local Fabric Ops** section and expand the **Nodes** category.
-2. Right click on `peer0.org1.example.com` and select **Export Connection Details**
 
-![export connection](./images/exportConnection.png)
+1. From the IBM Blockchain Platform extension, go to the **FABRIC GATEWAYS** section and right click on **Local Fabric**.
 
-3. In the dialog that appears select the **queryPattern** folder
+2. Select **Export Connection Profile**.
+
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74058737-a9353980-49b4-11ea-8dc3-074de39b4b89.png">
+</p>
+<br>
+
+3. In the dialog that appears, select the **queryPattern** folder.
 
 This process will export the connection profile which has the necessary information our application will need to interact with our blockchain network. Next we need to export our wallet.
 
 4. From the IBM Blockchain Platform extension, go to the **FABRIC WALLETS** section at the bottom left
-and right-click the **local_fabric_wallet**. Then select **Export Wallet** and then when it asks where, 
-save the wallet in the **queryPattern** folder.
+and right-click the **Local Fabric Wallet**. Then select **Export Wallet**. In the dialog that appears, 
+choose the **queryPattern** folder.
 
-![export connection](./images/exportWallet.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74058981-2791db80-49b5-11ea-9143-7ae909f9ce79.png">
+</p>
+<br>
 
+5. Switch back to the Explorer view by clicking on the paper icons at the top left of VS Code. You should now see the newly exported **local_fabric_wallet** folder.
 
-Your folder structure should look similar to the picture below, with our wallet and admin credentials which include an public and private key.
+Your folder structure should look similar to the picture below, with the wallet and admin credentials which include a public and private key.
 
-![export connection](./images/structureWithWallet.png)
-
-
-4. Switch back to the Explorer view by clicking on the paper icons at the top left of VS Code. You should now see our newly exported **local_fabric_wallet** folder.
-
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74059113-6e7fd100-49b5-11ea-9206-857fddbabf07.png">
+</p>
+<br>
 
 
 #### 3. Populate the world state
-Right now our world state is empty and there is nothing to query. Let's add some entries to the ledger so that we can see some results when we run the queries.
+
+Right now the world state is empty and there is nothing to query. Let's add some entries to the ledger so that we can see some results when we run the queries.
 
 1. From the terminal and while in the **application** folder, run `node setup.js`
 
 This will run through a variety of transactions to populate the ledger. The process will take about 2-3 minutes. While this is running, take a look at the **setup.js** file from within VS Code to see what the transactions are doing.
 
+
 #### 4. Query the world state
+
 Now we can finally get around to querying the world state.
 
 1. From the terminal, run `node query.js`
@@ -219,24 +289,35 @@ This query will return absolutely everything that is in the world state. While t
 
 2. From the terminal, run `node queryByOwner.js`
 
-This query will return all assets that are currently owned by MagnetoCorp. If you take a look at the `queryByOwner.js` file in VS Code you can see in line 67 that we are calling the `queryByOwner` transaction defined in the `papercontract.js` file and that we are passing in `MagnetoCorp` as the only argument. You can easily change `MagnetoCorp` to `DigiBank` and rerun the query to get all assets owned by DigiBank instead.
+This query will return all assets that are currently owned by MagnetoCorp. If you take a look at the `queryByOwner.js` file in VS Code you can see in line 66 that we are calling the `queryByOwner` transaction defined in the `papercontract.js` file and that we are passing in `MagnetoCorp` as the only argument. You can easily change `MagnetoCorp` to `DigiBank` and rerun the query to get all assets owned by DigiBank instead.
 
-![query by owner](./images/queryByOwner.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74059396-f6fe7180-49b5-11ea-8255-f15edabaa60a.png">
+</p>
+<br>
 
 3. From the terminal, run `node queryByCurrentState.js`
 
-This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentState.js` in VS Code you can see in line 67 that this time we are calling the `queryByCurrentState` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
+This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentState.js` in VS Code you can see in line 64 that this time we are calling the `queryByCurrentState` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
 
 - 1 = issued
 - 2 = bought
 - 3 = redeemed
 
-![query by current state](./images/queryByCurrentState.png)
+<br>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8854447/74059450-17c6c700-49b6-11ea-90ce-6716bcf1e5f3.png">
+</p>
+<br>
 
 It's also worth noting that to call the transactions in these query files we are using the `contract.evaluateTransaction()` method instead of `contract.submitTransaction()`. This is because `evaluateTransaction` is only evaluated on the endorsing nodes and does not get submitted to the orderer and thus is not ordered into a block or committed. As such this method cannot update the ledger and is only used for querying.
 
-### Summary
+
+## Summary
+
 In this section we took a look at how querying works in a Hyperledger Fabric network with CouchDB as the state database. First, we created indexes for commonly used queries. Then, we added the query logic to the smart contract. Finally, we ran some queries and took a look at what the world state contained.
+
 
 ## License
 
