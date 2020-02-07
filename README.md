@@ -82,8 +82,8 @@ The directory structure should look like the image below.
 This file states that the index will:
 - keep track of the *issuer* field of each document
 - store this index in a design document (ddoc) named *issuerIndexDoc*
-- is named issuerIndex
-- will be in json format
+- is named *issuerIndex*
+- will be in *json* format
 
 Now let's create two more index files.
 
@@ -101,7 +101,7 @@ Now let's create two more index files.
 }
 ```
 
-This index is very similar to the previous one for the issuer field but instead we are indexing the *owner* field.
+This index is very similar to the previous one for the *issuer* field but instead we are indexing the *owner* field.
 
 5. Finally, create one last file in the **indexes** directory and name it **currentStateIndex.json**
 6. Then, copy the following code into that file:
@@ -132,8 +132,8 @@ And that's all it takes to build indexes. These indexes will be deployed the nex
 
 Now we need to implement the query logic in the transactions of the smart contract. These transactions will be invoked by the Node.js SDK to execute our queries.
 
-1. Using VSCode, open the [papercontract.js](./papercontract.js) file found in this pattern repo
-2. Replace the contents of [contract/lib/papercontract.js](./contract/lib/papercontract.js) with the new [papercontract.js](./papercontract.js)
+1. Using VSCode, open the [papercontract.js](./papercontract.js) file found in this pattern repo.
+2. Replace the contents of [contract/lib/papercontract.js](./contract/lib/papercontract.js) with the new [papercontract.js](./papercontract.js).
 
 This updated contract already has the query logic added. Let's take a look at the transactions that were added.
 
@@ -145,7 +145,7 @@ This updated contract already has the query logic added. Let's take a look at th
 
 Let's take a closer look at the code involved in making these queries.
 
-Open the new [papercontract.js](./papercontract.js) in VS Code and go to line 182 
+Open the new [papercontract.js](./papercontract.js) in VS Code and go to line 182.
 
 <br>
 <p align="center">
@@ -162,7 +162,7 @@ The next property to note is `use_index` which allows you to specify a design do
 
 Since we made changes to the smart contract we now need to re-deploy it to the peer.
 
-1. Open up [contract/package.json](./contract/package.json) in VS Code
+1. Open up [contract/package.json](./contract/package.json) in VS Code.
 
 2. Change the *version* property to **0.0.2** and save the file.
 
@@ -274,7 +274,7 @@ Your folder structure should look similar to the picture below, with the wallet 
 
 Right now the world state is empty and there is nothing to query. Let's add some entries to the ledger so that we can see some results when we run the queries.
 
-1. From the terminal and while in the **application** folder, run `node setup.js`
+1. From the terminal and while in the **application** folder, run `node setup.js`.
 
 This will run through a variety of transactions to populate the ledger. The process will take about 2-3 minutes. While this is running, take a look at the **setup.js** file from within VS Code to see what the transactions are doing.
 
@@ -283,11 +283,11 @@ This will run through a variety of transactions to populate the ledger. The proc
 
 Now we can finally get around to querying the world state.
 
-1. From the terminal, run `node query.js`
+1. From the terminal, run `node query.js`.
 
 This query will return absolutely everything that is in the world state. While this might be valuable in some situations, in most cases you will want to search based on certain criteria such as by owner or by status.
 
-2. From the terminal, run `node queryByOwner.js`
+2. From the terminal, run `node queryByOwner.js`.
 
 This query will return all assets that are currently owned by MagnetoCorp. If you take a look at the `queryByOwner.js` file in VS Code you can see in line 66 that we are calling the `queryByOwner` transaction defined in the `papercontract.js` file and that we are passing in `MagnetoCorp` as the only argument. You can easily change `MagnetoCorp` to `DigiBank` and rerun the query to get all assets owned by DigiBank instead.
 
@@ -297,7 +297,7 @@ This query will return all assets that are currently owned by MagnetoCorp. If yo
 </p>
 <br>
 
-3. From the terminal, run `node queryByCurrentState.js`
+3. From the terminal, run `node queryByCurrentState.js`.
 
 This query will return all commercial papers that have been bought. If you take a look at `queryByCurrentState.js` in VS Code you can see in line 64 that this time we are calling the `queryByCurrentState` transaction in `papercontract.js` and passing in the status code of 2 as the only parameter. The status codes for the commercial papers are as follows:
 

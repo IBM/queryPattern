@@ -19,7 +19,7 @@ Verify the installation under the Extensions view.
 
 #### Step 2. Start a local fabric environment
 
-Go to the Blockchain platform view and under `FABRIC ENVIRONMENTS`, click on `Local Fabric` to start the Local Fabric environment
+Go to the Blockchain platform view and under `FABRIC ENVIRONMENTS`, click on `Local Fabric` to start the Local Fabric environment.
 
 <br>
 <p align="center">
@@ -34,7 +34,7 @@ After a few minutes, your network will be up and running.
 
 1. Open up your terminal and `cd` into where you'd like to clone the repo. 
 
-2. Then, enter the following command to clone the repo
+2. Then, enter the following command to clone the repo.
 
 ```bash
 git clone https://github.com/IBM/queryPattern
@@ -50,7 +50,7 @@ In this section, we will deploy the base commercial paper smart contract which w
 
 In VSCode, choose `File` > `Open...`, and select the **contract** folder within the repo that was cloned in the previous step. 
 
-Then, right click in the space under your files in the **Explorer** view and select **Add folder to workspace...**
+Then, right click in the space under your files in the **Explorer** view and select **Add folder to workspace...**.
 
 <br>
 <p align="center">
@@ -112,9 +112,9 @@ When the process completes, you should see **papercontract@0.0.1** under the *In
 
 #### Step 6. Instantiate the contract
 
-1. In the **FABRIC ENVIRONMENTS** section, click on **+ Instantiate** 
+1. In the **FABRIC ENVIRONMENTS** section, click on **+ Instantiate**.
 
-2. Select **papercontract@0.0.1** when asked to select a smart contract
+2. Select **papercontract@0.0.1** when asked to select a smart contract.
 
 4. You will then be prompted to enter a function to call, type **instantiate** and press enter.
 
@@ -126,7 +126,7 @@ When the process completes, you should see **papercontract@0.0.1** under the *In
 
 After a short delay, your smart contract will be instantiated on the channel.
 
-If everything went according to plan then you should see *papercontract@0.0.1* listed under the *Instantiated* section of **FABRIC ENVIRONMENTS**
+If everything went according to plan then you should see **papercontract@0.0.1** listed under the *Instantiated* section of **FABRIC ENVIRONMENTS**.
 
 <br>
 <p align="center">
