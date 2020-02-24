@@ -111,7 +111,7 @@ class CommercialPaperContract extends Contract {
         if (paper.isTrading()) {
             paper.setOwner(newOwner);
         } else {
-            throw new Error('Paper ' + issuer + paperNumber + ' is not trading. Current state = ' +paper.getCurrentState());
+            throw new Error('Paper ' + issuer + paperNumber + ' is not trading. Current state = ' + paper.getCurrentState());
         }
 
         // Update the paper
@@ -160,11 +160,11 @@ class CommercialPaperContract extends Contract {
     async queryByIssuer(ctx, issuer) {
 
         let queryString = {
-            "selector": {
-                "issuer": issuer
+            selector: {
+                issuer: issuer
             },
-            "use_index": ["_design/issuerIndexDoc", "issuerIndex"]
-        }
+            use_index: ['_design/issuerIndexDoc', 'issuerIndex']
+        };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
         return queryResults;
@@ -180,10 +180,10 @@ class CommercialPaperContract extends Contract {
     async queryByOwner(ctx, owner) {
 
         let queryString = {
-            "selector": {
-                "owner": owner
+            selector: {
+                owner: owner
             },
-            "use_index": ["_design/ownerIndexDoc", "ownerIndex"]
+            use_index: ['_design/ownerIndexDoc', 'ownerIndex']
         };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
@@ -196,16 +196,16 @@ class CommercialPaperContract extends Contract {
      *
      * @param {Context} ctx the transaction context
      * @param {String} currentState current state number of the commercial paper. Refer to paper.js for state values
-    */    
+    */
     async queryByCurrentState(ctx, currentState) {
 
         let state = parseInt(currentState);
 
         let queryString = {
-            "selector": {
-                "currentState": state
+            selector: {
+                currentState: state
             },
-            "use_index": ["_design/currentStateIndexDoc", "currentStateIndex"]
+            use_index: ['_design/currentStateIndexDoc', 'currentStateIndex']
         };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
@@ -222,7 +222,7 @@ class CommercialPaperContract extends Contract {
     async queryAll(ctx) {
 
         let queryString = {
-            "selector": {}
+            selector: {}
         };
 
         let queryResults = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
@@ -235,16 +235,17 @@ class CommercialPaperContract extends Contract {
      *
      * @param {Context} ctx the transaction context
      * @param {String} queryString the query string to be evaluated
-    */    
+    */
     async queryWithQueryString(ctx, queryString) {
 
-        console.log("query String");
+        console.log('query String');
         console.log(JSON.stringify(queryString));
 
         let resultsIterator = await ctx.stub.getQueryResult(queryString);
-        
+
         let allResults = [];
 
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             let res = await resultsIterator.next();
 
