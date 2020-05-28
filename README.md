@@ -155,6 +155,8 @@ Open the new [papercontract.js](./papercontract.js) in VS Code and go to line 18
 
 Take a look at how the `queryString` is structured. The `selector` property is where you specify which field of the asset state you want to search against. In the case of our `queryByOwner` transaction, we are searching against the `owner` field and passing in a variable that represents the owner that we want to search for (e.g. `MagnetoCorp`).
 
+**Note**: You can look at more examples for selectors in [more_about_selectors](./more_about_selectors.md).
+
 The next property to note is `use_index` which allows you to specify a design document and index to use for the query.
 
 
